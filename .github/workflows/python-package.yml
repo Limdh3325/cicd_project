@@ -1,27 +1,19 @@
-name: Python application
+name: model-training
 
-on:
-  push:
-    branches: [ python-ci-workflow ]
-  pull_request:
-    branches: [ python-ci-workflow ]
+on: [push]
 
 jobs:
-  build:
+  run:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.8"
-    - name: Display Python version
-      run: python -c "import sys; print(sys.version)"
-    - name: Build & push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: limdh3325/github-application
-        tags: v2
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - uses: iterative/setup-cml@v1
+      - name: Train model
+        env:
+          REPO_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: |
+          pip install -r requirements.txt
+          python train.py
+					echo "MODEL METRICS"
+					cat metrics.txt
