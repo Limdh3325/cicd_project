@@ -14,7 +14,7 @@ jobs:
           dvc run -n process -d process_data.py -d data_raw.csv -o data_processed.csv --no-exec python process_data.py
           dvc repro 
           git fetch --prune ## https://git-scm.com/docs/git-fetch
-          dvc metrics diff --show-md master > report.md
+          dvc metrics diff --show-md python-dvc-metric > report.md
           echo "## Validating results by region" >> report.md
           echo "![](./by_region.png)" >> report.md
           cml comment create report.md
